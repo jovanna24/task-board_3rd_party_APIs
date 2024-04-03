@@ -4,8 +4,7 @@ let nextId = JSON.parse(localStorage.getItem("nextId"));
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
-    const toDoName
-
+    
 }
 
 // Todo: create a function to create a task card
@@ -37,3 +36,8 @@ function handleDrop(event, ui) {
 $(document).ready(function () {
 
 });
+
+
+$('#myModal').on('shown.bs.modal', function () {
+    $('#myInput').trigger('focus')
+  })

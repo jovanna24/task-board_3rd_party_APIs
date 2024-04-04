@@ -12,9 +12,11 @@ const taskDateInputEl= $('#taskDueDate');
 
 // Todo: create a function to generate a unique task id
 //Need Help using Crypto UUID
-// function generateTaskId() {
-//   let uuid = self.crypto.randomUUID();
-// }
+ function generateTaskId() {
+   let uuid = self.crypto.randomUUID();
+   return uuid
+}
+
 function readTasksFromStorage() {
 let tasks=JSON.parse(localStorage.getItem("tasks"));
 if (!tasks){
@@ -25,40 +27,40 @@ return tasks;
 
 
 function saveTasksToStorage(tasks){
-localStorage.setItem('newTask', JSON.stringify(tasks));
+  localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-const taskCard = $('div')
-  .addClass('card task-card draggable my-3')
-  .attr('data-task-id', task.id);
-const cardHeader = $('<div>').addClass('card-header h4').text(task.name);
-const cardBody = $('<div>').addClass('card-body');
-const cardDescription = $('<p>').addClass('card-text').text(task.type);
-const cardDueDate = $('<p>').addClass('card-text').text(task.dueDate);
-const cardDeleteBtn = $('<button>')
-  .addClass('btn btn-danger delete')
-  .text('Delete')
-  .attr('data-task-id', task.id);
-cardDeleteBtn.on('click', handleDeleteTask);
+  const taskCard = $('<div>')
+    .addClass('card task-card draggable my-3')
+    .attr('data-task-id', task.id);
+  const cardHeader = $('<div>').addClass('card-header h4').text(task.name);
+  const cardBody = $('<div>').addClass('card-body');
+  const cardDescription = $('<p>').addClass('card-text').text(task.type);
+  const cardDueDate = $('<p>').addClass('card-text').text(task.dueDate);
+  const cardDeleteBtn = $('<button>')
+    .addClass('btn btn-danger delete')
+    .text('Delete')
+    .attr('data-task-id', task.id);
+  cardDeleteBtn.on('click', handleDeleteTask);
 
-if (task.dueDate && task.status !== 'done') {
-  const now = dayjs();
-  const taskDueDate = dayjs(task.dueDate, 'DD/MM/YYYY');
+  if (task.dueDate && task.status !== 'done') {
+    const now = dayjs();
+    const taskDueDate = dayjs(task.dueDate, 'DD/MM/YYYY');
 
-  if (now.isSame(taskDueDate, 'day')) {
-    taskCard.addClass ('bg-warning text-white');
-  } else if (now.isAfter(taskDueDate)) {
-    taskCard.addClass ('bg-danger text-white');
-    cardDeleteBtn.addClass('border-light');
+    if (now.isSame(taskDueDate, 'day')) {
+      taskCard.addClass ('bg-warning text-white');
+    } else if (now.isAfter(taskDueDate)) {
+      taskCard.addClass ('bg-danger text-white');
+      cardDeleteBtn.addClass('border-light');
+    }
   }
-}
 
-cardBody.append(cardDescription, cardDueDate, cardDeleteBtn);
-taskCard.append(cardHeader, cardBody);
+  cardBody.append(cardDescription, cardDueDate, cardDeleteBtn);
+  taskCard.append(cardHeader, cardBody);
 
-return taskCard;
+  return taskCard;
 }
 
 
@@ -76,14 +78,14 @@ function handleTaskFormSubmit(event){
     type: taskType,
     dueDate: taskDate,
     status: 'to-do',
+    id: generateTaskId(),
   };
 
   const tasks = readTasksFromStorage();
   tasks.push(newTask);
 
-  localStorage.setItem('newTask', JSON.stringify(tasks))
 
-  saveTasksToStorage(newTask);
+  saveTasksToStorage(tasks);
 
   printTaskData();
 
@@ -109,6 +111,7 @@ function printTaskData () {
   for (let task of tasks) {
     if (task.status === 'to-do'){
       todoList.append(createTaskCard(task));
+      
     } else if (task.status === 'in-progress'){
       inProgressList.append(createTaskCard(task));
     } else if (task.status === 'done') {
@@ -154,17 +157,17 @@ function handleDeleteTask(){
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-const tasks = readTasksFromStorage();
-const taskId = ui.draggable[0].dataset.taskId;
-const newStatus = event.target.id;
+  const tasks = readTasksFromStorage();
+  const taskId = ui.draggable[0].dataset.taskId;
+  const newStatus = event.target.id;
 
-for (let task of tasks) {
-  if (task.id === taskId) {
-    task.status = newStatus;
+  for (let task of tasks) {
+    if (task.id === taskId) {
+      task.status = newStatus;
+    }
   }
-}
-localStorage.setItem('tasks', JSON.stringify(tasks));
-printTaskData();
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  printTaskData();
 }
 
 taskFormEl.on('submit', handleTaskFormSubmit);

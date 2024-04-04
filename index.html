@@ -38,23 +38,23 @@
           <div class="modal-body">
             <form id="task-form">
               <div class="form-group">
-                <label for="inputTaskTitle">Task Title</label>
-                <input type="text" class="form-control" id="inputTaskTitle" placeholder="Enter Task Title">            
+                <label for="task-name-input">Task Title</label>
+                <input type="text" class="form-control" id="task-name-input" placeholder="Enter Task Title">            
               </div> 
               <div class="form-group">
-                <label for="inputTaskDueDate">Due Date</label>
-                <input placeholder="Task Due Date" autocomplete="off" type="text" class="form-control mb-3 hasDatepicker" id="inputTaskDueDate">
+                <label for="taskDueDate">Due Date</label>
+                <input placeholder="Task Due Date" autocomplete="off" type="text" class="form-control mb-3 hasDatepicker" id="taskDueDate">
               </div>
               <div class="form-group">
-                <label for="inputTaskDescription">Task Description</label>
-                <input placeholder="Task Description" type="text" class="form-control" id="inputTaskDescription">
-              </div>
-            </form>
+                <label for="task-type-input">Task Description</label>
+                <input placeholder="Task Description" type="text" class="form-control" id="task-type-input">
+              </div>            
+              <div class="modal-footer">
+                <button onclick="close()" type="button" class="btn btn-secondary" data-dismiss="modal" type="close">Close</button>
+                <button onclick="form_submit()" type="button" class="btn btn-primary" type="submit">Save Changes</button>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save Changes</button>
-          </div>
+          </form>
+        </div>
         </div>
       </div>
     </div>

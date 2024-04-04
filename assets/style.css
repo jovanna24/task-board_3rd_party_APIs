@@ -15,3 +15,11 @@ body {
     cursor: grab;
   }
   
+
+  .task-late{
+    background-color: blueviolet;
+  }
+
+  .task-today {
+    background-color: red;
+  }
